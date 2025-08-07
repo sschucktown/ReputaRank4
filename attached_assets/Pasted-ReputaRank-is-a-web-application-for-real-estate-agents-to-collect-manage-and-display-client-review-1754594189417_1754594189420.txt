@@ -1,0 +1,118 @@
+ReputaRank is a web application for real estate agents to collect, manage, and display client reviews. It includes custom Supabase authentication, protected API routes via Express, and a React frontend that allows agents to log in, submit client info, manage review requests, and monitor feedback.
+
+🎯 Goals
+✅ Secure login and authentication via Supabase Auth.
+
+✅ Dashboard for agents to view stats, client lists, review requests, and testimonials.
+
+✅ CRUD operations for clients and review requests.
+
+✅ Backend protected via JWT-based middleware.
+
+✅ Frontend routing that enforces authentication.
+
+🔧 Tech Stack
+Layer	Technology
+Frontend	React, Vite, React Router
+Backend	Node.js + Express
+Auth	Supabase Auth (JWT)
+DB	Supabase Postgres
+Hosting	Replit/Render/Vercel
+Styling	Tailwind CSS
+
+🔐 Authentication Flow
+User signs in with Supabase.
+
+JWT is retrieved and stored in localStorage or cookies.
+
+All /api/* routes require the JWT in the Authorization header.
+
+Custom Express middleware (validateJWT.ts) verifies the JWT server-side using Supabase Admin API.
+
+If valid, request proceeds; if not, returns 401 Unauthorized.
+
+📁 File Structure (simplified)
+bash
+Copy
+Edit
+root/
+├── client/                   # React frontend
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── routes/
+│   │   ├── utils/
+│   │   └── App.tsx
+│   └── vite.config.ts
+├── server/                   # Express backend
+│   ├── middleware/           # validateJWT.ts
+│   ├── routes/
+│   │   ├── clients.ts
+│   │   ├── auth.ts
+│   │   ├── reviewRequests.ts
+│   │   └── testimonials.ts
+│   └── index.ts
+├── .env
+└── package.json
+🔄 API Endpoints (Express)
+All routes under /api/* require JWT auth.
+
+GET /api/auth/user
+Returns the current user (via Supabase Admin API).
+
+GET /api/clients
+Returns the list of clients for the authenticated user.
+
+POST /api/clients
+Adds a new client (requires name and email).
+
+GET /api/review-requests
+Retrieves review request history.
+
+POST /api/review-requests
+Sends a new review request to a client.
+
+GET /api/dashboard/stats
+Returns stats about client engagement and reviews.
+
+🧩 Frontend Routes (React Router)
+Route	Component	Access
+/	Home / Splash	Public
+/login	LoginPage	Public
+/dashboard	DashboardPage	Protected
+/clients	ClientsPage	Protected
+/requests	ReviewRequestsPage	Protected
+/testimonials	TestimonialsPage	Protected
+
+Protected routes are wrapped using a <ProtectedRoute /> component that checks for Supabase session status.
+
+🔐 Middleware – validateJWT.ts
+Grabs JWT from Authorization header.
+
+Calls Supabase Admin API with Service Role key to validate the token.
+
+On success: attaches req.user.
+
+On failure: sends 401 Unauthorized.
+
+💬 Questions to Confirm (before codegen):
+✅ Confirm how JWT is stored on the client (cookies vs. localStorage)?
+
+❓ Should there be role-based access (e.g., Admin vs. Agent) or is every authenticated user treated equally?
+
+❓ Is email sending handled via Supabase Edge Functions or another service (e.g., Resend)?
+
+✅ MVP Deliverables
+ Supabase integration (auth, DB schema)
+
+ Express server with middleware + routes
+
+ React app with login and dashboard UI
+
+ Route guarding using <ProtectedRoute />
+
+ Basic Tailwind UI components for each page
+
+ Email notification via Supabase or Resend API (if applicable)
+
+Would you like me to generate the validateJWT.ts, ProtectedRoute.tsx, or any of the missing files in the stack above? I can also prep a Replit or full GitHub repo structure from this PRD.

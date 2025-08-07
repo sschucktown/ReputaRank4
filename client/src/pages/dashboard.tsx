@@ -5,18 +5,29 @@ import { Button } from "@/components/ui/button";
 import { Users, Star, Clock, TrendingUp, Plus, Send, Eye } from "lucide-react";
 import Header from "@/components/Header";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import AddClientForm from "./clients";
+import { AddClientForm } from "./clients";
 import { authService } from "@/lib/auth";
 
 export default function DashboardPage() {
   const [showAddClient, setShowAddClient] = useState(false);
 
-  const { data: stats, isLoading: statsLoading } = useQuery({
+  const { data: stats, isLoading: statsLoading } = useQuery<{
+    totalClients: number;
+    reviewsReceived: number;
+    pendingRequests: number;
+    avgRating: number;
+  }>({
     queryKey: ["/api/dashboard/stats"],
     enabled: !!authService.getToken(),
   });
 
-  const { data: recentTestimonials } = useQuery({
+  const { data: recentTestimonials } = useQuery<Array<{
+    id: string;
+    clientName: string;
+    rating: number;
+    content: string;
+    createdAt: string;
+  }>>({
     queryKey: ["/api/testimonials"],
     enabled: !!authService.getToken(),
   });

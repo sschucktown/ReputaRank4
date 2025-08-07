@@ -15,12 +15,28 @@ export default function ReviewRequestsPage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data: requests, isLoading } = useQuery({
+  const { data: requests, isLoading } = useQuery<Array<{
+    id: string;
+    clientId: string;
+    message: string;
+    status: string;
+    sentAt: string;
+    completedAt?: string;
+  }>>({
     queryKey: ["/api/review-requests"],
     enabled: !!authService.getToken(),
   });
 
-  const { data: clients } = useQuery({
+  const { data: clients } = useQuery<Array<{
+    id: string;
+    name: string;
+    email: string;
+    phone?: string;
+    clientType: string;
+    propertyType: string;
+    status: string;
+    createdAt: string;
+  }>>({
     queryKey: ["/api/clients"],
     enabled: !!authService.getToken(),
   });
@@ -52,7 +68,7 @@ export default function ReviewRequestsPage() {
     },
   });
 
-  const filteredRequests = requests?.filter((request: any) => {
+  const filteredRequests = requests?.filter((request) => {
     if (statusFilter === "all") return true;
     return request.status === statusFilter;
   }) || [];
@@ -71,21 +87,21 @@ export default function ReviewRequestsPage() {
   };
 
   const getClientName = (clientId: string) => {
-    const client = clients?.find((c: any) => c.id === clientId);
+    const client = clients?.find((c) => c.id === clientId);
     return client?.name || "Unknown Client";
   };
 
   const getClientEmail = (clientId: string) => {
-    const client = clients?.find((c: any) => c.id === clientId);
+    const client = clients?.find((c) => c.id === clientId);
     return client?.email || "";
   };
 
   const requestStats = {
     total: requests?.length || 0,
-    pending: requests?.filter((r: any) => r.status === "pending").length || 0,
-    completed: requests?.filter((r: any) => r.status === "completed").length || 0,
-    responseRate: requests?.length > 0 
-      ? Math.round((requests.filter((r: any) => r.status === "completed").length / requests.length) * 100)
+    pending: requests?.filter((r) => r.status === "pending").length || 0,
+    completed: requests?.filter((r) => r.status === "completed").length || 0,
+    responseRate: (requests?.length || 0) > 0 
+      ? Math.round(((requests?.filter((r) => r.status === "completed").length || 0) / (requests?.length || 1)) * 100)
       : 0,
   };
 

@@ -10,17 +10,34 @@ import { authService } from "@/lib/auth";
 export default function TestimonialsPage() {
   const [ratingFilter, setRatingFilter] = useState("all");
 
-  const { data: testimonials, isLoading } = useQuery({
+  const { data: testimonials, isLoading } = useQuery<Array<{
+    id: string;
+    clientId: string;
+    content: string;
+    rating: number;
+    propertyType?: string;
+    isPublic: boolean;
+    createdAt: string;
+  }>>({
     queryKey: ["/api/testimonials"],
     enabled: !!authService.getToken(),
   });
 
-  const { data: clients } = useQuery({
+  const { data: clients } = useQuery<Array<{
+    id: string;
+    name: string;
+    email: string;
+    phone?: string;
+    clientType: string;
+    propertyType: string;
+    status: string;
+    createdAt: string;
+  }>>({
     queryKey: ["/api/clients"],
     enabled: !!authService.getToken(),
   });
 
-  const filteredTestimonials = testimonials?.filter((testimonial: any) => {
+  const filteredTestimonials = testimonials?.filter((testimonial) => {
     if (ratingFilter === "all") return true;
     if (ratingFilter === "5-star") return testimonial.rating === 5;
     if (ratingFilter === "4-star") return testimonial.rating === 4;
@@ -28,7 +45,7 @@ export default function TestimonialsPage() {
   }) || [];
 
   const getClientName = (clientId: string) => {
-    const client = clients?.find((c: any) => c.id === clientId);
+    const client = clients?.find((c) => c.id === clientId);
     return client?.name || "Unknown Client";
   };
 
@@ -43,16 +60,16 @@ export default function TestimonialsPage() {
     ));
   };
 
-  const averageRating = testimonials?.length > 0 
-    ? testimonials.reduce((sum: number, t: any) => sum + t.rating, 0) / testimonials.length
+  const averageRating = (testimonials?.length || 0) > 0 
+    ? (testimonials?.reduce((sum: number, t) => sum + t.rating, 0) || 0) / (testimonials?.length || 1)
     : 0;
 
   const ratingBreakdown = {
-    5: testimonials?.filter((t: any) => t.rating === 5).length || 0,
-    4: testimonials?.filter((t: any) => t.rating === 4).length || 0,
-    3: testimonials?.filter((t: any) => t.rating === 3).length || 0,
-    2: testimonials?.filter((t: any) => t.rating === 2).length || 0,
-    1: testimonials?.filter((t: any) => t.rating === 1).length || 0,
+    5: testimonials?.filter((t) => t.rating === 5).length || 0,
+    4: testimonials?.filter((t) => t.rating === 4).length || 0,
+    3: testimonials?.filter((t) => t.rating === 3).length || 0,
+    2: testimonials?.filter((t) => t.rating === 2).length || 0,
+    1: testimonials?.filter((t) => t.rating === 1).length || 0,
   };
 
   const totalReviews = testimonials?.length || 0;

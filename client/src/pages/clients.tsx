@@ -118,7 +118,7 @@ export function AddClientForm({ onSuccess }: AddClientFormProps) {
           id="phone"
           type="tel"
           data-testid="input-client-phone"
-          value={formData.phone}
+          value={formData.phone || ""}
           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
         />
       </div>
@@ -185,12 +185,21 @@ export default function ClientsPage() {
   const [showAddClient, setShowAddClient] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { data: clients, isLoading } = useQuery({
+  const { data: clients, isLoading } = useQuery<Array<{
+    id: string;
+    name: string;
+    email: string;
+    phone?: string;
+    clientType: string;
+    propertyType: string;
+    status: string;
+    createdAt: string;
+  }>>({
     queryKey: ["/api/clients"],
     enabled: !!authService.getToken(),
   });
 
-  const filteredClients = clients?.filter((client: any) =>
+  const filteredClients = clients?.filter((client) =>
     client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     client.email.toLowerCase().includes(searchTerm.toLowerCase())
   ) || [];

@@ -9,7 +9,12 @@ export default function Sidebar() {
 
   const user = authService.getCurrentUser();
 
-  const { data: stats } = useQuery({
+  const { data: stats } = useQuery<{
+    totalClients: number;
+    reviewsReceived: number;
+    pendingRequests: number;
+    avgRating: number;
+  }>({
     queryKey: ["/api/dashboard/stats"],
     enabled: !!authService.getToken(),
   });

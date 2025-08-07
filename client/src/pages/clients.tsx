@@ -172,7 +172,7 @@ export function AddClientForm({ onSuccess }: AddClientFormProps) {
           type="submit"
           data-testid="button-submit-client"
           disabled={createClientMutation.isPending}
-          className="flex-1 bg-primary-600 hover:bg-primary-700"
+          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium"
         >
           {createClientMutation.isPending ? "Adding..." : "Add Client"}
         </Button>

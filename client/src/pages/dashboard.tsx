@@ -215,7 +215,7 @@ export default function DashboardPage() {
                     <Button
                       data-testid="button-add-client-quick"
                       onClick={() => setShowAddClient(true)}
-                      className="w-full justify-center bg-primary-600 hover:bg-primary-700"
+                      className="w-full justify-center bg-blue-600 hover:bg-blue-700 text-white font-medium"
                     >
                       <Plus className="w-4 h-4 mr-2" />
                       Add New Client

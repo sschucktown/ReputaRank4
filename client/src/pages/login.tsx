@@ -161,7 +161,7 @@ export default function LoginPage() {
                   type="submit"
                   data-testid="button-sign-in"
                   disabled={isLoading}
-                  className="w-full bg-primary-600 hover:bg-primary-700"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200"
                 >
                   {isLoading ? "Signing in..." : "Sign in"}
                 </Button>

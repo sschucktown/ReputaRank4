@@ -33,7 +33,7 @@ export default function Header({ title, subtitle, onAddClient }: HeaderProps) {
             <Button
               data-testid="button-add-client-header"
               onClick={onAddClient}
-              className="bg-primary-600 text-white hover:bg-primary-700"
+              className="bg-blue-600 text-white hover:bg-blue-700 font-medium"
             >
               <Plus className="w-4 h-4 mr-2" />
               Add Client

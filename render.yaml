@@ -1,0 +1,11 @@
+# render.yaml
+services:
+  - type: static
+    name: react-supabase-web
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_SUPABASE_URL
+        value: https://jgvavszehiwygezgyxpo.supabase.co
+      - key: VITE_SUPABASE_ANON_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpndmF2c3plaGl3eWdlemd5eHBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MjA3NjksImV4cCI6MjA3MDA5Njc2OX0.A6ia-uJQifhZbhb6sjFCbvGsGp5GAJGzzqdPr7_a5_Q

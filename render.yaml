@@ -1,6 +1,6 @@
 # render.yaml
 services:
-  - type: static
+  - type: static_site
     name: react-supabase-web
     buildCommand: npm ci && npm run build
     staticPublishPath: dist

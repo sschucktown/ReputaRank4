@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReputaRank - Real Estate Review Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/index.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        },
+                        success: {
+                            50: '#ecfdf5',
+                            500: '#10b981',
+                            600: '#059669',
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        .hero-pattern {
+            background-image: radial-gradient(circle at 25% 25%, #3b82f680 0%, transparent 50%), 
+                            radial-gradient(circle at 75% 75%, #1d4ed880 0%, transparent 50%);
+        }
+    </style>
+</head>
+<body class="font-inter bg-slate-50 text-slate-900">
+
+    <!-- @COMPONENT: AuthWrapper [handles authentication state] -->
+    <div id="auth-wrapper">
+        
+        <!-- LOGIN PAGE -->
+        <!-- @COMPONENT: LoginPage [initial authentication view] -->
+        <div id="login-page" class="min-h-screen flex">
+            <!-- Left Side - Branding -->
+            <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800 hero-pattern relative">
+                <div class="flex flex-col justify-center px-12 text-white relative z-10">
+                    <div class="mb-8">
+                        <h1 class="text-4xl font-bold mb-4">ReputaRank</h1>
+                        <p class="text-xl text-blue-100 mb-8">Transform client reviews into your competitive advantage</p>
+                    </div>
+                    
+                    <!-- Feature List -->
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Automated review collection</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Professional testimonial display</span>
+                        </div>
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 mr-3 text-green-300" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Secure client management</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats Preview -->
+                    <div class="grid grid-cols-2 gap-4 mt-12">
+                        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                            <div class="text-2xl font-bold">95%</div>
+                            <div class="text-sm text-blue-100">Client satisfaction</div>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                            <div class="text-2xl font-bold">2.3x</div>
+                            <div class="text-sm text-blue-100">More referrals</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side - Login Form -->
+            <div class="w-full lg:w-1/2 flex items-center justify-center px-8 py-12">
+                <div class="w-full max-w-md">
+                    <!-- Logo for mobile -->
+                    <div class="lg:hidden text-center mb-8">
+                        <h1 class="text-2xl font-bold text-primary-600">ReputaRank</h1>
+                        <p class="text-slate-600">Real Estate Review Management</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-lg p-8">
+                        <div class="text-center mb-8">
+                            <h2 class="text-2xl font-semibold text-slate-900">Welcome back</h2>
+                            <p class="text-slate-600 mt-2">Sign in to your agent dashboard</p>
+                        </div>
+                        
+                        <form data-event="submit:handleLogin" class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Email address</label>
+                                <input type="email" data-bind="email" placeholder="agent@realestate.com" 
+                                       class="w-full px-3 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Password</label>
+                                <input type="password" data-bind="password" placeholder="••••••••" 
+                                       class="w-full px-3 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors">
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-slate-300 text-primary-600 focus:ring-primary-500">
+                                    <span class="ml-2 text-sm text-slate-600">Remember me</span>
+                                </label>
+                                <a href="#" class="text-sm text-primary-600 hover:text-primary-700">Forgot password?</a>
+                            </div>
+                            
+                            <button type="submit" data-implementation="Integrate with Supabase Auth"
+                                    class="w-full bg-primary-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-primary-700 transition-colors focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                                Sign in
+                            </button>
+                        </form>
+                        
+                        <div class="mt-8 pt-6 border-t border-slate-200 text-center">
+                            <p class="text-slate-600">
+                                New to ReputaRank? 
+                                <a href="#" class="text-primary-600 hover:text-primary-700 font-medium">Create an account</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: LoginPage -->
+
+        <!-- MAIN DASHBOARD APPLICATION -->
+        <!-- @COMPONENT: DashboardApp [main authenticated application shell] -->
+        <div id="dashboard-app" class="hidden min-h-screen bg-slate-50" data-implementation="Show after successful authentication">
+            
+            <!-- @COMPONENT: Sidebar [main navigation] -->
+            <div class="fixed inset-y-0 left-0 w-64 bg-white shadow-lg border-r border-slate-200" data-state="sidebarOpen:boolean">
+                <div class="flex flex-col h-full">
+                    <!-- Logo -->
+                    <div class="p-6 border-b border-slate-200">
+                        <h1 class="text-xl font-bold text-slate-900">ReputaRank</h1>
+                        <p class="text-sm text-slate-600">Agent Dashboard</p>
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <nav class="flex-1 px-4 py-6 space-y-2">
+                        <a href="#dashboard" data-event="click:navigateToPage" 
+                           class="flex items-center px-3 py-2.5 text-sm font-medium rounded-lg bg-primary-50 text-primary-700 border-r-2 border-primary-600">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v6H8V5z"/>
+                            </svg>
+                            Dashboard
+                        </a>
+                        
+                        <a href="#clients" data-event="click:navigateToPage" 
+                           class="flex items-center px-3 py-2.5 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                            </svg>
+                            Clients
+                            <span class="ml-auto bg-slate-200 text-slate-600 text-xs px-2 py-1 rounded-full" data-bind="clientsCount">24</span>
+                        </a>
+                        
+                        <a href="#requests" data-event="click:navigateToPage" 
+                           class="flex items-center px-3 py-2.5 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                            </svg>
+                            Review Requests
+                            <span class="ml-auto bg-amber-100 text-amber-600 text-xs px-2 py-1 rounded-full" data-bind="pendingRequests">7</span>
+                        </a>
+                        
+                        <a href="#testimonials" data-event="click:navigateToPage" 
+                           class="flex items-center px-3 py-2.5 text-sm font-medium text-slate-700 rounded-lg hover:bg-slate-100 transition-colors">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                            </svg>
+                            Testimonials
+                            <span class="ml-auto bg-success-100 text-success-600 text-xs px-2 py-1 rounded-full" data-bind="testimonialsCount">18</span>
+                        </a>
+                    </nav>
+                    
+                    <!-- User Profile -->
+                    <div class="p-4 border-t border-slate-200">
+                        <div class="flex items-center">
+                            <!-- Profile image placeholder - in production would be user's photo -->
+                            <div class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+                                <span class="text-sm font-medium text-primary-700" data-bind="user.initials">SM</span>
+                            </div>
+                            <div class="ml-3 flex-1">
+                                <p class="text-sm font-medium text-slate-900" data-bind="user.name">Sarah Martinez</p>
+                                <p class="text-xs text-slate-500" data-bind="user.role">Real Estate Agent</p>
+                            </div>
+                            <button data-event="click:logout" class="text-slate-400 hover:text-slate-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: Sidebar -->
+
+            <!-- Main Content -->
+            <div class="ml-64 flex-1">
+                
+                <!-- @COMPONENT: Header [top navigation with breadcrumbs and actions] -->
+                <header class="bg-white border-b border-slate-200 px-6 py-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h1 class="text-xl font-semibold text-slate-900" data-bind="currentPage.title">Dashboard</h1>
+                            <p class="text-sm text-slate-600" data-bind="currentPage.subtitle">Welcome back, Sarah</p>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4">
+                            <!-- Notifications -->
+                            <button class="relative p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5-5v5zM12 4a8 8 0 00-8 8v2l-2 2h20l-2-2v-2a8 8 0 00-8-8z"/>
+                                </svg>
+                                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center" data-bind="notifications.unread">3</span>
+                            </button>
+                            
+                            <!-- Quick Actions -->
+                            <button data-event="click:addClient" 
+                                    class="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors">
+                                Add Client
+                            </button>
+                        </div>
+                    </div>
+                </header>
+                <!-- @END_COMPONENT: Header -->
+
+                <!-- Page Content Container -->
+                <main class="p-6">
+
+                    <!-- DASHBOARD VIEW -->
+                    <!-- @COMPONENT: DashboardView [main dashboard with stats and recent activity] -->
+                    <div id="dashboard-view" class="space-y-6">
+                        
+                        <!-- Stats Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-medium text-slate-600">Total Clients</p>
+                                        <p class="text-3xl font-bold text-slate-900" data-bind="stats.totalClients">24</p>
+                                    </div>
+                                    <div class="bg-primary-100 p-3 rounded-full">
+                                        <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="mt-4 flex items-center text-sm">
+                                    <span class="text-success-600 font-medium">+12%</span>
+                                    <span class="text-slate-600 ml-2">from last month</span>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-medium text-slate-600">Reviews Received</p>
+                                        <p class="text-3xl font-bold text-slate-900" data-bind="stats.reviewsReceived">18</p>
+                                    </div>
+                                    <div class="bg-success-100 p-3 rounded-full">
+                                        <svg class="w-6 h-6 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="mt-4 flex items-center text-sm">
+                                    <span class="text-success-600 font-medium">+25%</span>
+                                    <span class="text-slate-600 ml-2">from last month</span>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-medium text-slate-600">Pending Requests</p>
+                                        <p class="text-3xl font-bold text-slate-900" data-bind="stats.pendingRequests">7</p>
+                                    </div>
+                                    <div class="bg-amber-100 p-3 rounded-full">
+                                        <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="mt-4 flex items-center text-sm">
+                                    <span class="text-amber-600 font-medium">2 this week</span>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-medium text-slate-600">Avg. Rating</p>
+                                        <p class="text-3xl font-bold text-slate-900" data-bind="stats.avgRating">4.8</p>
+                                    </div>
+                                    <div class="bg-yellow-100 p-3 rounded-full">
+                                        <svg class="w-6 h-6 text-yellow-600" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="mt-4 flex items-center text-sm">
+                                    <div class="flex items-center">
+                                        <!-- Star ratings -->
+                                        <div class="flex space-x-1">
+                                            <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 text-gray-300 fill-current" viewBox="0 0 24 24">
+                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity & Quick Actions -->
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            
+                            <!-- Recent Reviews -->
+                            <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200">
+                                <div class="p-6 border-b border-slate-200">
+                                    <h3 class="text-lg font-semibold text-slate-900">Recent Reviews</h3>
+                                    <p class="text-sm text-slate-600">Latest client feedback</p>
+                                </div>
+                                <div class="p-6 space-y-4">
+                                    <!-- @MAP: recentReviews.map(review => ( -->
+                                    <div class="flex items-start space-x-3 p-4 rounded-lg bg-slate-50">
+                                        <div class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+                                            <span class="text-sm font-medium text-primary-700" data-bind="review.client.initials">JD</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="flex items-center justify-between mb-1">
+                                                <h4 class="text-sm font-medium text-slate-900" data-bind="review.client.name">John Davidson</h4>
+                                                <div class="flex items-center">
+                                                    <div class="flex space-x-1">
+                                                        <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                                        </svg>
+                                                        <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                                        </svg>
+                                                        <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                                        </svg>
+                                                        <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                                        </svg>
+                                                        <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="ml-2 text-xs text-slate-500" data-bind="review.date">2 days ago</span>
+                                                </div>
+                                            </div>
+                                            <p class="text-sm text-slate-600" data-bind="review.content">"Sarah made our home buying experience seamless. Highly professional and responsive!"</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start space-x-3 p-4 rounded-lg bg-slate-50">
+                                        <div class="w-10 h-10 bg-success-100 rounded-full flex items-center justify-center">
+                                            <span class="text-sm font-medium text-success-700" data-bind="review.client.initials">MR</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="flex items-center justify-between mb-1">
+                                                <h4 class="text-sm font-medium text-slate-900" data-bind="review.client.name">Maria Rodriguez</h4>
+                                                <div class="flex items-center">
+                                                    <div class="flex space-x-1">
+                                                        <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                                        </svg>
+                                                        <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                                        </svg>
+                                                        <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                                        </svg>
+                                                        <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                                        </svg>
+                                                        <svg class="w-4 h-4 text-gray-300 fill-current" viewBox="0 0 24 24">
+                                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="ml-2 text-xs text-slate-500" data-bind="review.date">5 days ago</span>
+                                                </div>
+                                            </div>
+                                            <p class="text-sm text-slate-600" data-bind="review.content">"Excellent knowledge of the market and great negotiation skills. Will definitely refer!"</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start space-x-3 p-4 rounded-lg bg-slate-50">
+                                        <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
+                                            <span class="text-sm font-medium text-amber-700" data-bind="review.client.initials">TC</span>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="flex items-center justify-between mb-1">
+                                                <h4 class="text-sm font-medium text-slate-900" data-bind="review.client.name">Tom Chen</h4>
+                                                <div class="flex items-center">
+                                                    <div class="flex space-x-1">
+                                                        <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                                        </svg>
+                                                        <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                                        </svg>
+                                                        <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                                        </svg>
+                                                        <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                                        </svg>
+                                                        <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <span class="ml-2 text-xs text-slate-500" data-bind="review.date">1 week ago</span>
+                                                </div>
+                                            </div>
+                                            <p class="text-sm text-slate-600" data-bind="review.content">"Found us the perfect home within our budget. Great communication throughout the process."</p>
+                                        </div>
+                                    </div>
+                                    <!-- @END_MAP )) -->
+                                </div>
+                                <div class="px-6 py-4 border-t border-slate-200">
+                                    <button class="text-sm text-primary-600 hover:text-primary-700 font-medium">View all reviews →</button>
+                                </div>
+                            </div>
+
+                            <!-- Quick Actions -->
+                            <div class="space-y-6">
+                                <!-- Add Client Quick Form -->
+                                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                                    <h3 class="text-lg font-semibold text-slate-900 mb-4">Quick Actions</h3>
+                                    <div class="space-y-3">
+                                        <button data-event="click:addClient" 
+                                                class="w-full flex items-center justify-center px-4 py-3 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors">
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                            </svg>
+                                            Add New Client
+                                        </button>
+                                        <button data-event="click:sendReviewRequest" 
+                                                class="w-full flex items-center justify-center px-4 py-3 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200 transition-colors">
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                                            </svg>
+                                            Send Review Request
+                                        </button>
+                                        <button data-event="click:viewTestimonials" 
+                                                class="w-full flex items-center justify-center px-4 py-3 bg-slate-100 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-200 transition-colors">
+                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                                            </svg>
+                                            View Testimonials
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Upcoming Tasks -->
+                                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                                    <h3 class="text-lg font-semibold text-slate-900 mb-4">Upcoming Tasks</h3>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-2 h-2 bg-amber-500 rounded-full"></div>
+                                            <span class="text-sm text-slate-600">Follow up with Maria Rodriguez</span>
+                                        </div>
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                            <span class="text-sm text-slate-600">Send contracts to John Davidson</span>
+                                        </div>
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                            <span class="text-sm text-slate-600">Schedule property viewing</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- @END_COMPONENT: DashboardView -->
+
+                    <!-- CLIENTS VIEW -->
+                    <!-- @COMPONENT: ClientsView [client management interface] -->
+                    <div id="clients-view" class="hidden">
+                        
+                        <!-- Clients Header -->
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h2 class="text-2xl font-bold text-slate-900">Clients</h2>
+                                <p class="text-slate-600">Manage your client relationships</p>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <!-- Search -->
+                                <div class="relative">
+                                    <input type="text" placeholder="Search clients..." 
+                                           class="pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 w-64">
+                                    <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                    </svg>
+                                </div>
+                                <button data-event="click:addClient" 
+                                        class="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors">
+                                    Add Client
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Clients Table -->
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead class="bg-slate-50 border-b border-slate-200">
+                                        <tr>
+                                            <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Client</th>
+                                            <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Contact</th>
+                                            <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Property Type</th>
+                                            <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
+                                            <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Added</th>
+                                            <th class="px-6 py-4 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-200">
+                                        <!-- @MAP: clients.map(client => ( -->
+                                        <tr class="hover:bg-slate-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+                                                        <span class="text-sm font-medium text-primary-700" data-bind="client.initials">JD</span>
+                                                    </div>
+                                                    <div class="ml-4">
+                                                        <div class="text-sm font-medium text-slate-900" data-bind="client.name">John Davidson</div>
+                                                        <div class="text-sm text-slate-500" data-bind="client.type">Buyer</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-slate-900" data-bind="client.email">john.davidson@email.com</div>
+                                                <div class="text-sm text-slate-500" data-bind="client.phone">(555) 123-4567</div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="text-sm text-slate-900" data-bind="client.propertyType">Single Family Home</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-success-100 text-success-800" data-bind="client.status">Closed</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500" data-bind="client.dateAdded">Dec 15, 2023</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <div class="flex items-center space-x-2">
+                                                    <button data-event="click:editClient" class="text-primary-600 hover:text-primary-900">Edit</button>
+                                                    <button data-event="click:sendReviewRequest" class="text-slate-600 hover:text-slate-900">Request Review</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr class="hover:bg-slate-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="w-10 h-10 bg-success-100 rounded-full flex items-center justify-center">
+                                                        <span class="text-sm font-medium text-success-700" data-bind="client.initials">MR</span>
+                                                    </div>
+                                                    <div class="ml-4">
+                                                        <div class="text-sm font-medium text-slate-900" data-bind="client.name">Maria Rodriguez</div>
+                                                        <div class="text-sm text-slate-500" data-bind="client.type">Seller</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-slate-900" data-bind="client.email">maria.rodriguez@email.com</div>
+                                                <div class="text-sm text-slate-500" data-bind="client.phone">(555) 987-6543</div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="text-sm text-slate-900" data-bind="client.propertyType">Condo</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-amber-100 text-amber-800" data-bind="client.status">In Progress</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500" data-bind="client.dateAdded">Dec 10, 2023</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <div class="flex items-center space-x-2">
+                                                    <button data-event="click:editClient" class="text-primary-600 hover:text-primary-900">Edit</button>
+                                                    <button data-event="click:sendReviewRequest" class="text-slate-600 hover:text-slate-900">Request Review</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr class="hover:bg-slate-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="flex items-center">
+                                                    <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
+                                                        <span class="text-sm font-medium text-amber-700" data-bind="client.initials">TC</span>
+                                                    </div>
+                                                    <div class="ml-4">
+                                                        <div class="text-sm font-medium text-slate-900" data-bind="client.name">Tom Chen</div>
+                                                        <div class="text-sm text-slate-500" data-bind="client.type">Buyer</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-slate-900" data-bind="client.email">tom.chen@email.com</div>
+                                                <div class="text-sm text-slate-500" data-bind="client.phone">(555) 456-7890</div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="text-sm text-slate-900" data-bind="client.propertyType">Townhouse</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-success-100 text-success-800" data-bind="client.status">Closed</span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500" data-bind="client.dateAdded">Nov 28, 2023</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <div class="flex items-center space-x-2">
+                                                    <button data-event="click:editClient" class="text-primary-600 hover:text-primary-900">Edit</button>
+                                                    <button data-event="click:sendReviewRequest" class="text-slate-600 hover:text-slate-900">Request Review</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <!-- @END_MAP )) -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- Pagination -->
+                            <div class="px-6 py-4 border-t border-slate-200">
+                                <div class="flex items-center justify-between">
+                                    <p class="text-sm text-slate-700">Showing <span class="font-medium">1</span> to <span class="font-medium">10</span> of <span class="font-medium">24</span> results</p>
+                                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                                        <button class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-slate-300 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50">
+                                            Previous
+                                        </button>
+                                        <button class="relative inline-flex items-center px-4 py-2 border border-slate-300 bg-primary-600 text-sm font-medium text-white">1</button>
+                                        <button class="relative inline-flex items-center px-4 py-2 border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50">2</button>
+                                        <button class="relative inline-flex items-center px-4 py-2 border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50">3</button>
+                                        <button class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-slate-300 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50">
+                                            Next
+                                        </button>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- @END_COMPONENT: ClientsView -->
+
+                    <!-- REVIEW REQUESTS VIEW -->
+                    <!-- @COMPONENT: ReviewRequestsView [review request management] -->
+                    <div id="review-requests-view" class="hidden">
+                        
+                        <!-- Review Requests Header -->
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h2 class="text-2xl font-bold text-slate-900">Review Requests</h2>
+                                <p class="text-slate-600">Track and manage review requests</p>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <!-- Filter -->
+                                <select class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                    <option>All Requests</option>
+                                    <option>Pending</option>
+                                    <option>Completed</option>
+                                    <option>Expired</option>
+                                </select>
+                                <button data-event="click:sendNewRequest" 
+                                        class="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors">
+                                    Send New Request
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Request Stats -->
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                                <div class="text-2xl font-bold text-slate-900" data-bind="requestStats.total">32</div>
+                                <div class="text-sm text-slate-600">Total Sent</div>
+                            </div>
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                                <div class="text-2xl font-bold text-amber-600" data-bind="requestStats.pending">7</div>
+                                <div class="text-sm text-slate-600">Pending</div>
+                            </div>
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                                <div class="text-2xl font-bold text-success-600" data-bind="requestStats.completed">18</div>
+                                <div class="text-sm text-slate-600">Completed</div>
+                            </div>
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                                <div class="text-2xl font-bold text-slate-900" data-bind="requestStats.responseRate">75%</div>
+                                <div class="text-sm text-slate-600">Response Rate</div>
+                            </div>
+                        </div>
+
+                        <!-- Requests List -->
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200">
+                            <div class="p-6 border-b border-slate-200">
+                                <h3 class="text-lg font-semibold text-slate-900">Recent Requests</h3>
+                            </div>
+                            <div class="divide-y divide-slate-200">
+                                <!-- @MAP: reviewRequests.map(request => ( -->
+                                <div class="p-6 hover:bg-slate-50">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
+                                                <span class="text-sm font-medium text-primary-700" data-bind="request.client.initials">JD</span>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-lg font-medium text-slate-900" data-bind="request.client.name">John Davidson</h4>
+                                                <p class="text-sm text-slate-600" data-bind="request.client.email">john.davidson@email.com</p>
+                                                <p class="text-xs text-slate-500">Sent <span data-bind="request.sentDate">3 days ago</span></p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-4">
+                                            <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-success-100 text-success-800" data-bind="request.status">Completed</span>
+                                            <div class="flex space-x-2">
+                                                <button data-event="click:viewRequest" class="text-primary-600 hover:text-primary-900 text-sm font-medium">View</button>
+                                                <button data-event="click:resendRequest" class="text-slate-600 hover:text-slate-900 text-sm font-medium">Resend</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 pl-16">
+                                        <p class="text-sm text-slate-600" data-bind="request.message">"Hi John, I hope you're enjoying your new home! Would you mind leaving a quick review about your experience working with me?"</p>
+                                    </div>
+                                </div>
+
+                                <div class="p-6 hover:bg-slate-50">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+                                                <span class="text-sm font-medium text-amber-700" data-bind="request.client.initials">MR</span>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-lg font-medium text-slate-900" data-bind="request.client.name">Maria Rodriguez</h4>
+                                                <p class="text-sm text-slate-600" data-bind="request.client.email">maria.rodriguez@email.com</p>
+                                                <p class="text-xs text-slate-500">Sent <span data-bind="request.sentDate">1 week ago</span></p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-4">
+                                            <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-amber-100 text-amber-800" data-bind="request.status">Pending</span>
+                                            <div class="flex space-x-2">
+                                                <button data-event="click:viewRequest" class="text-primary-600 hover:text-primary-900 text-sm font-medium">View</button>
+                                                <button data-event="click:resendRequest" class="text-slate-600 hover:text-slate-900 text-sm font-medium">Resend</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 pl-16">
+                                        <p class="text-sm text-slate-600" data-bind="request.message">"Hi Maria, I wanted to follow up and see how you're settling into your new place. If you have a moment, I'd really appreciate a review!"</p>
+                                    </div>
+                                </div>
+
+                                <div class="p-6 hover:bg-slate-50">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="w-12 h-12 bg-success-100 rounded-full flex items-center justify-center">
+                                                <span class="text-sm font-medium text-success-700" data-bind="request.client.initials">TC</span>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-lg font-medium text-slate-900" data-bind="request.client.name">Tom Chen</h4>
+                                                <p class="text-sm text-slate-600" data-bind="request.client.email">tom.chen@email.com</p>
+                                                <p class="text-xs text-slate-500">Sent <span data-bind="request.sentDate">2 weeks ago</span></p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-4">
+                                            <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-success-100 text-success-800" data-bind="request.status">Completed</span>
+                                            <div class="flex space-x-2">
+                                                <button data-event="click:viewRequest" class="text-primary-600 hover:text-primary-900 text-sm font-medium">View</button>
+                                                <button data-event="click:resendRequest" class="text-slate-600 hover:text-slate-900 text-sm font-medium">Resend</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 pl-16">
+                                        <p class="text-sm text-slate-600" data-bind="request.message">"Hey Tom! Hope you're loving the new townhouse. Would love to hear about your experience - a review would mean the world to me!"</p>
+                                    </div>
+                                </div>
+                                <!-- @END_MAP )) -->
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- @END_COMPONENT: ReviewRequestsView -->
+
+                    <!-- TESTIMONIALS VIEW -->
+                    <!-- @COMPONENT: TestimonialsView [testimonials display and management] -->
+                    <div id="testimonials-view" class="hidden">
+                        
+                        <!-- Testimonials Header -->
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h2 class="text-2xl font-bold text-slate-900">Testimonials</h2>
+                                <p class="text-slate-600">Showcase your client success stories</p>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <!-- Filter -->
+                                <select class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                                    <option>All Reviews</option>
+                                    <option>5 Star</option>
+                                    <option>4 Star</option>
+                                    <option>Recent</option>
+                                </select>
+                                <button data-event="click:exportTestimonials" 
+                                        class="bg-slate-100 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-200 transition-colors">
+                                    Export
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Rating Overview -->
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+                            <div class="flex items-center justify-between">
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold text-slate-900" data-bind="testimonials.averageRating">4.8</div>
+                                    <div class="flex justify-center mt-2">
+                                        <div class="flex space-x-1">
+                                            <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                            </svg>
+                                            <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                            </svg>
+                                            <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                            </svg>
+                                            <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                            </svg>
+                                            <svg class="w-5 h-5 text-gray-300 fill-current" viewBox="0 0 24 24">
+                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm text-slate-600 mt-1" data-bind="testimonials.totalCount">18 reviews</div>
+                                </div>
+                                
+                                <!-- Rating Breakdown -->
+                                <div class="flex-1 max-w-md mx-8">
+                                    <div class="space-y-3">
+                                        <div class="flex items-center">
+                                            <span class="text-sm text-slate-600 w-8">5★</span>
+                                            <div class="flex-1 bg-slate-200 rounded-full h-2 mx-3">
+                                                <div class="bg-yellow-400 h-2 rounded-full" style="width: 75%"></div>
+                                            </div>
+                                            <span class="text-sm text-slate-600 w-8">12</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <span class="text-sm text-slate-600 w-8">4★</span>
+                                            <div class="flex-1 bg-slate-200 rounded-full h-2 mx-3">
+                                                <div class="bg-yellow-400 h-2 rounded-full" style="width: 25%"></div>
+                                            </div>
+                                            <span class="text-sm text-slate-600 w-8">4</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <span class="text-sm text-slate-600 w-8">3★</span>
+                                            <div class="flex-1 bg-slate-200 rounded-full h-2 mx-3">
+                                                <div class="bg-yellow-400 h-2 rounded-full" style="width: 10%"></div>
+                                            </div>
+                                            <span class="text-sm text-slate-600 w-8">2</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <span class="text-sm text-slate-600 w-8">2★</span>
+                                            <div class="flex-1 bg-slate-200 rounded-full h-2 mx-3">
+                                                <div class="bg-yellow-400 h-2 rounded-full" style="width: 0%"></div>
+                                            </div>
+                                            <span class="text-sm text-slate-600 w-8">0</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <span class="text-sm text-slate-600 w-8">1★</span>
+                                            <div class="flex-1 bg-slate-200 rounded-full h-2 mx-3">
+                                                <div class="bg-yellow-400 h-2 rounded-full" style="width: 0%"></div>
+                                            </div>
+                                            <span class="text-sm text-slate-600 w-8">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Testimonials Grid -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- @MAP: testimonials.map(testimonial => ( -->
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
+                                            <span class="text-sm font-medium text-primary-700" data-bind="testimonial.client.initials">JD</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-lg font-medium text-slate-900" data-bind="testimonial.client.name">John Davidson</h4>
+                                            <p class="text-sm text-slate-600" data-bind="testimonial.date">December 15, 2023</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex space-x-1">
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p class="text-slate-700 leading-relaxed" data-bind="testimonial.content">"Sarah made our home buying experience seamless and stress-free. Her knowledge of the local market was invaluable, and she was always available to answer our questions. We couldn't be happier with our new home!"</p>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <span class="text-sm text-slate-500" data-bind="testimonial.propertyType">Single Family Home</span>
+                                    <div class="flex space-x-2">
+                                        <button data-event="click:shareTestimonial" class="text-primary-600 hover:text-primary-900 text-sm font-medium">Share</button>
+                                        <button data-event="click:exportTestimonial" class="text-slate-600 hover:text-slate-900 text-sm font-medium">Export</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-12 h-12 bg-success-100 rounded-full flex items-center justify-center">
+                                            <span class="text-sm font-medium text-success-700" data-bind="testimonial.client.initials">MR</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-lg font-medium text-slate-900" data-bind="testimonial.client.name">Maria Rodriguez</h4>
+                                            <p class="text-sm text-slate-600" data-bind="testimonial.date">December 10, 2023</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex space-x-1">
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-gray-300 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p class="text-slate-700 leading-relaxed" data-bind="testimonial.content">"Excellent knowledge of the market and great negotiation skills. Sarah helped me get the best price for my condo sale. Professional, reliable, and a pleasure to work with. Will definitely refer friends and family!"</p>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <span class="text-sm text-slate-500" data-bind="testimonial.propertyType">Condo Sale</span>
+                                    <div class="flex space-x-2">
+                                        <button data-event="click:shareTestimonial" class="text-primary-600 hover:text-primary-900 text-sm font-medium">Share</button>
+                                        <button data-event="click:exportTestimonial" class="text-slate-600 hover:text-slate-900 text-sm font-medium">Export</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+                                            <span class="text-sm font-medium text-amber-700" data-bind="testimonial.client.initials">TC</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-lg font-medium text-slate-900" data-bind="testimonial.client.name">Tom Chen</h4>
+                                            <p class="text-sm text-slate-600" data-bind="testimonial.date">November 28, 2023</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex space-x-1">
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p class="text-slate-700 leading-relaxed" data-bind="testimonial.content">"Found us the perfect townhouse within our budget and timeline. Sarah's attention to detail and communication throughout the process made everything smooth. Highly recommend to anyone looking for a dedicated agent!"</p>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <span class="text-sm text-slate-500" data-bind="testimonial.propertyType">Townhouse</span>
+                                    <div class="flex space-x-2">
+                                        <button data-event="click:shareTestimonial" class="text-primary-600 hover:text-primary-900 text-sm font-medium">Share</button>
+                                        <button data-event="click:exportTestimonial" class="text-slate-600 hover:text-slate-900 text-sm font-medium">Export</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                                            <span class="text-sm font-medium text-purple-700" data-bind="testimonial.client.initials">AS</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="text-lg font-medium text-slate-900" data-bind="testimonial.client.name">Anna Smith</h4>
+                                            <p class="text-sm text-slate-600" data-bind="testimonial.date">November 20, 2023</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex space-x-1">
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        <svg class="w-5 h-5 text-gray-300 fill-current" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p class="text-slate-700 leading-relaxed" data-bind="testimonial.content">"As a first-time home buyer, I was nervous about the process. Sarah made everything clear and comfortable. She advocated for us during negotiations and truly had our best interests at heart. Thank you!"</p>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <span class="text-sm text-slate-500" data-bind="testimonial.propertyType">First-Time Buyer</span>
+                                    <div class="flex space-x-2">
+                                        <button data-event="click:shareTestimonial" class="text-primary-600 hover:text-primary-900 text-sm font-medium">Share</button>
+                                        <button data-event="click:exportTestimonial" class="text-slate-600 hover:text-slate-900 text-sm font-medium">Export</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- @END_MAP )) -->
+                        </div>
+
+                    </div>
+                    <!-- @END_COMPONENT: TestimonialsView -->
+
+                </main>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: DashboardApp -->
+
+        <!-- ADD CLIENT MODAL -->
+        <!-- @COMPONENT: AddClientModal [modal for adding new clients] -->
+        <div id="add-client-modal" class="hidden fixed inset-0 bg-slate-900/50 flex items-center justify-center z-50" data-state="modalOpen:boolean">
+            <div class="bg-white rounded-xl shadow-xl max-w-md w-full mx-4">
+                <div class="p-6 border-b border-slate-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-slate-900">Add New Client</h3>
+                        <button data-event="click:closeModal" class="text-slate-400 hover:text-slate-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <form data-event="submit:addClient" class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Full Name *</label>
+                        <input type="text" data-bind="newClient.name" required 
+                               class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Email Address *</label>
+                        <input type="email" data-bind="newClient.email" required 
+                               class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
+                        <input type="tel" data-bind="newClient.phone" 
+                               class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Client Type</label>
+                        <select data-bind="newClient.type" 
+                                class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                            <option value="buyer">Buyer</option>
+                            <option value="seller">Seller</option>
+                            <option value="both">Both</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Property Type</label>
+                        <select data-bind="newClient.propertyType" 
+                                class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                            <option value="single-family">Single Family Home</option>
+                            <option value="condo">Condo</option>
+                            <option value="townhouse">Townhouse</option>
+                            <option value="multi-family">Multi-Family</option>
+                            <option value="commercial">Commercial</option>
+                        </select>
+                    </div>
+                    <div class="flex space-x-3 pt-4">
+                        <button type="button" data-event="click:closeModal" 
+                                class="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors">
+                            Cancel
+                        </button>
+                        <button type="submit" data-implementation="Validate form and call API to add client"
+                                class="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                            Add Client
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: AddClientModal -->
+
+    </div>
+    <!-- @END_COMPONENT: AuthWrapper -->
+
+    <script>
+        // TODO: Implement business logic, API calls, and state management
+        
+        // Simulated navigation function - replace with React Router
+        (() => {
+            let currentView = 'dashboard';
+            
+            function showView(viewId) {
+                // Hide all views
+                document.querySelectorAll('[id$="-view"]').forEach(view => view.classList.add('hidden'));
+                // Show target view
+                document.getElementById(viewId + '-view').classList.remove('hidden');
+                
+                // Update navigation active states
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.classList.remove('bg-primary-50', 'text-primary-700', 'border-r-2', 'border-primary-600');
+                    link.classList.add('text-slate-700', 'hover:bg-slate-100');
+                });
+                
+                const activeLink = document.querySelector(`nav a[href="#${viewId}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('bg-primary-50', 'text-primary-700', 'border-r-2', 'border-primary-600');
+                    activeLink.classList.remove('text-slate-700', 'hover:bg-slate-100');
+                }
+                
+                // Update header title
+                const titles = {
+                    'dashboard': 'Dashboard',
+                    'clients': 'Clients',
+                    'requests': 'Review Requests', 
+                    'testimonials': 'Testimonials'
+                };
+                
+                const titleElement = document.querySelector('[data-bind="currentPage.title"]');
+                if (titleElement) {
+                    titleElement.textContent = titles[viewId] || 'Dashboard';
+                }
+            }
+            
+            // Navigation event handlers
+            document.addEventListener('click', (e) => {
+                const link = e.target.closest('a[href^="#"]');
+                if (link) {
+                    e.preventDefault();
+                    const viewId = link.getAttribute('href').substring(1);
+                    showView(viewId);
+                    currentView = viewId;
+                }
+            });
+            
+            // Modal handlers
+            document.addEventListener('click', (e) => {
+                if (e.target.matches('[data-event="click:addClient"]')) {
+                    document.getElementById('add-client-modal').classList.remove('hidden');
+                }
+                
+                if (e.target.matches('[data-event="click:closeModal"]')) {
+                    document.getElementById('add-client-modal').classList.add('hidden');
+                }
+                
+                // Close modal on backdrop click
+                if (e.target.id === 'add-client-modal') {
+                    document.getElementById('add-client-modal').classList.add('hidden');
+                }
+            });
+            
+            // Simulated authentication - show dashboard after "login"
+            document.addEventListener('DOMContentLoaded', () => {
+                // For demo purposes, show dashboard immediately
+                // In production, this would check authentication state
+                document.getElementById('login-page').classList.add('hidden');
+                document.getElementById('dashboard-app').classList.remove('hidden');
+                showView('dashboard');
+            });
+        })();
+        
+        // Form submission handler
+        document.addEventListener('submit', (e) => {
+            if (e.target.matches('[data-event="submit:handleLogin"]')) {
+                e.preventDefault();
+                // TODO: Implement Supabase authentication
+                console.log('Login form submitted');
+            }
+            
+            if (e.target.matches('[data-event="submit:addClient"]')) {
+                e.preventDefault();
+                // TODO: Implement client addition API call
+                console.log('Add client form submitted');
+                document.getElementById('add-client-modal').classList.add('hidden');
+            }
+        });
+    </script>
+
+</body>
+</html>

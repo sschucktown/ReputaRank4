@@ -2,8 +2,9 @@
 import type { Express, Request, Response } from 'express'
 import { supabase } from './storage'
 
-// Health check
-app.get('/health', (_req: Request, res: Response) => {
+export function registerRoutes(app: Express) {
+  // Health check
+  app.get('/health', (_req: Request, res: Response) => {
     res.status(200).json({ ok: true })
   })
 

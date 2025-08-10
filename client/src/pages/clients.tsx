@@ -371,13 +371,16 @@ export default function ClientsPage() {
 
         {/* Add Client Dialog */}
         <Dialog open={showAddClient} onOpenChange={setShowAddClient}>
-          <DialogContent className="max-w-md">
-            <DialogHeader>
-              <DialogTitle>Add New Client</DialogTitle>
-            </DialogHeader>
-            <AddClientForm onSuccess={() => setShowAddClient(false)} />
-          </DialogContent>
-        </Dialog>
+  <DialogContent className="max-w-md">
+    <DialogHeader>
+      <DialogTitle>Add New Client</DialogTitle>
+      <p className="sr-only" id="add-client-desc">
+        Fill out the form to add a new client.
+      </p>
+    </DialogHeader>
+    <AddClientForm onSuccess={() => setShowAddClient(false)} />
+  </DialogContent>
+</Dialog>
       </main>
     </div>
   );
